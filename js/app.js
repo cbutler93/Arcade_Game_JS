@@ -1,44 +1,82 @@
 // Enemies our player must avoid
-var Enemy = function(x, y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
-};
+// Refactor Enemy to ES6
+
+class Enemy {
+    constructor(sprite, x, y, speed) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.sprite = sprite;
+    }
+
+    update(dt) {
+        this.x < 500 ? this.x = this.x + (101 * dt * this.speed) : this.x = -200;
+        if (this.x === -200) {
+            this.speed = getRandSpeed();
+        }
+        this.checkCollision();
+    }
+
+    checkCollision() {
+        const lowerX = player.x - 15;
+        const upperX = player.x + 15;
+        if (this.x >= lowerX && this.x <= upperX && this.y === player.y) {
+            player.resetPlayer(0);
+            allEnemies.forEach(enemy => enemy.resetEnemy());
+        }
+    }
+
+    resetEnemy() {
+        this.x = 0;
+        this.speed = getRandSpeed();
+    }
+
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+}
+
+// var Enemy = function(x, y, speed) {
+//     // Variables applied to each of our instances go here,
+//     // we've provided one for you to get started
+//
+//     // The image/sprite for our enemies, this uses
+//     // a helper we've provided to easily load images
+//     this.sprite = 'images/enemy-bug.png';
+//     this.x = x;
+//     this.y = y;
+//     this.speed = speed;
+// };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    this.x < 500 ? this.x = this.x + (101 * dt * this.speed) : this.x = -200;
-    if (this.x === -200) {
-        this.speed = getRandSpeed();
-    }
-    this.checkCollision();
-};
-
-Enemy.prototype.checkCollision = function() {
-    const lowerX = player.x - 15;
-    const upperX = player.x + 15;
-    if (this.x >= lowerX && this.x <= upperX && this.y === player.y) {
-        player.resetPlayer(0);
-        allEnemies.forEach(enemy => enemy.resetEnemy());
-    }
-}
-
-Enemy.prototype.resetEnemy = function() {
-    this.x = 0;
-    this.speed = getRandSpeed();
-}
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+// Enemy.prototype.update = function(dt) {
+//     this.x < 500 ? this.x = this.x + (101 * dt * this.speed) : this.x = -200;
+//     if (this.x === -200) {
+//         this.speed = getRandSpeed();
+//     }
+//     this.checkCollision();
+// };
+//
+// Enemy.prototype.checkCollision = function() {
+//     const lowerX = player.x - 15;
+//     const upperX = player.x + 15;
+//     if (this.x >= lowerX && this.x <= upperX && this.y === player.y) {
+//         player.resetPlayer(0);
+//         allEnemies.forEach(enemy => enemy.resetEnemy());
+//     }
+// }
+//
+// Enemy.prototype.resetEnemy = function() {
+//     this.x = 0;
+//     this.speed = getRandSpeed();
+// }
+//
+// // Draw the enemy on the screen, required method for game
+// Enemy.prototype.render = function() {
+//     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+// };
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -103,20 +141,15 @@ function getRandSpeed() {
     return (Math.random() * 3) + 1.5;
 }
 
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-const playerImg = 'images/char-boy.png';
-const player = new Player(playerImg, 202, 373.5);
-
+const playerSprite = 'images/char-boy.png';
+const player = new Player(playerSprite, 202, 373.5);
 const allEnemies = [];
 // Calculate Y positions of enemies and add to allEnemies.
 for (let i = 0; i < 3; i++) {
     let nextPos;
     let speed = getRandSpeed();
     i === 0 ? nextPos = 41.5 : nextPos = 41.5 + (83 * i);
-    const newEnemy = new Enemy(0, nextPos, speed);
+    const newEnemy = new Enemy('images/enemy-bug.png', 0, nextPos, speed);
     allEnemies.push(newEnemy);
 }
 
