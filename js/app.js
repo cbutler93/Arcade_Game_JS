@@ -98,10 +98,10 @@ const allEnemies = [];
 
 // Calculate Y positions of enemies and add to allEnemies.
 for (let i = 0; i < 3; i++) {
-    let nextPos;
+    let nextYPos;
     let speed = getRandSpeed();
-    i === 0 ? nextPos = 41.5 : nextPos = 41.5 + (83 * i);
-    const newEnemy = new Enemy('images/enemy-bug.png', 0, nextPos, speed);
+    i === 0 ? nextYPos = 41.5 : nextYPos = 41.5 + (83 * i);
+    const newEnemy = new Enemy('images/enemy-bug.png', 0, nextYPos, speed);
     allEnemies.push(newEnemy);
 }
 
