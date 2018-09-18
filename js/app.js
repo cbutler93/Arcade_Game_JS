@@ -16,9 +16,12 @@ class Enemy {
 
     // Check if the player and enemies/bugs have collided.
     checkCollision() {
-        const lowerX = player.x - 15;
-        const upperX = player.x + 15;
-        if (this.x >= lowerX && this.x <= upperX && this.y === player.y) {
+        const buffer = 60;
+        // Create a 'field' around the enemy
+        const upperX = this.x + buffer;
+        const lowerX = this.x - buffer;
+        /* If the player is within the enemy's 'field' and they're in the same lane, the player is hit. */
+        if (player.x <= upperX && player.x >= lowerX && player.y === this.y) {
             player.resetPlayer(0);
             allEnemies.forEach(enemy => enemy.resetEnemy());
             styleLossMessage();
@@ -99,6 +102,7 @@ function getRandSpeed() {
     return (Math.random() * 3) + 1.5;
 }
 
+// Congratulate the player on a win.
 function styleWinMessage() {
     message.textContent = `You've Won!`;
     message.style.color = '#22b77f';
@@ -106,6 +110,7 @@ function styleWinMessage() {
     setTimeout(resetMessage, 2000);
 }
 
+// Inform the player of their loss.
 function styleLossMessage() {
     message.textContent = `You've Lost!`;
     message.style.color = '#fc0000';
@@ -113,17 +118,20 @@ function styleLossMessage() {
     setTimeout(resetMessage, 2000);
 }
 
+// Reset the message div.
 function resetMessage() {
     message.textContent = "";
     message.style.border = 'none';
 }
 
+// Create a div for the win/loss messages.
 const message = document.createElement('div');
 message.classList.add('message');
 // Append new div element after everything else has loaded to ensure proper positioning.
 window.onload = function() {
     document.body.appendChild(message);
 }
+
 const playerSprite = 'images/char-boy.png';
 const player = new Player(playerSprite, 202, 373.5);
 const allEnemies = [];
