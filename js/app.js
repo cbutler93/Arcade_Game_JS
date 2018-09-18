@@ -14,15 +14,18 @@ class Enemy {
         this.checkCollision();
     }
 
+    // Check if the player and enemies/bugs have collided.
     checkCollision() {
         const lowerX = player.x - 15;
         const upperX = player.x + 15;
         if (this.x >= lowerX && this.x <= upperX && this.y === player.y) {
             player.resetPlayer(0);
             allEnemies.forEach(enemy => enemy.resetEnemy());
+            styleLossMessage();
         }
     }
 
+    // Reset the enemy positioning to the start of the board and assign a new, random speed.
     resetEnemy() {
         this.x = 0;
         this.speed = getRandSpeed();
@@ -74,12 +77,15 @@ class Player {
         this.render();
     }
 
+    // Check if the player has moved into the water zone (game won).
     checkWin() {
         if (this.y < 0) {
             this.resetPlayer(250);
+            styleWinMessage();
         }
     }
 
+    // Reset the player's positioning with an optional delay.
     resetPlayer(resetTime) {
         window.setTimeout(() => {
             this.x = 202;
@@ -88,10 +94,36 @@ class Player {
     }
 }
 
+// Calculate a random speed for the enemies with a minimum of 1.5.
 function getRandSpeed() {
     return (Math.random() * 3) + 1.5;
 }
 
+function styleWinMessage() {
+    message.textContent = `You've Won!`;
+    message.style.color = '#22b77f';
+    message.style.border = '1px solid #22b77f';
+    setTimeout(resetMessage, 2000);
+}
+
+function styleLossMessage() {
+    message.textContent = `You've Lost!`;
+    message.style.color = '#fc0000';
+    message.style.border = '1px solid #fc0000';
+    setTimeout(resetMessage, 2000);
+}
+
+function resetMessage() {
+    message.textContent = "";
+    message.style.border = 'none';
+}
+
+const message = document.createElement('div');
+message.classList.add('message');
+// Append new div element after everything else has loaded to ensure proper positioning.
+window.onload = function() {
+    document.body.appendChild(message);
+}
 const playerSprite = 'images/char-boy.png';
 const player = new Player(playerSprite, 202, 373.5);
 const allEnemies = [];

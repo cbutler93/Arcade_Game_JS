@@ -1,3 +1,12 @@
 body {
     text-align: center;
 }
+
+.message {
+    width: 30%;
+    margin: auto;
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 30px;
+    font-weight: bold;
+}
