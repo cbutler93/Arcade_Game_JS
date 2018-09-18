@@ -16,7 +16,7 @@ var Enemy = function(x, y, speed) {
 Enemy.prototype.update = function(dt) {
     this.x < 500 ? this.x = this.x + (101 * dt * this.speed) : this.x = -200;
     if (this.x === -200) {
-        this.speed = (Math.random() * 3) + 1;
+        this.speed = getRandSpeed();
     }
     this.checkCollision();
 };
@@ -26,7 +26,13 @@ Enemy.prototype.checkCollision = function() {
     const upperX = player.x + 15;
     if (this.x >= lowerX && this.x <= upperX && this.y === player.y) {
         player.resetPlayer(0);
+        allEnemies.forEach(enemy => enemy.resetEnemy());
     }
+}
+
+Enemy.prototype.resetEnemy = function() {
+    this.x = 0;
+    this.speed = getRandSpeed();
 }
 
 // Draw the enemy on the screen, required method for game
@@ -93,6 +99,10 @@ class Player {
     }
 }
 
+function getRandSpeed() {
+    return (Math.random() * 3) + 1.5;
+}
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -104,7 +114,7 @@ const allEnemies = [];
 // Calculate Y positions of enemies and add to allEnemies.
 for (let i = 0; i < 3; i++) {
     let nextPos;
-    let speed = (Math.random() * 3) + 1.5;
+    let speed = getRandSpeed();
     i === 0 ? nextPos = 41.5 : nextPos = 41.5 + (83 * i);
     const newEnemy = new Enemy(0, nextPos, speed);
     allEnemies.push(newEnemy);
