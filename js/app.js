@@ -14,10 +14,20 @@ var Enemy = function(x, y, speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    this.x < 500 ? this.x = this.x + (101 * dt * this.speed) : this.x = -200;
+    if (this.x === -200) {
+        this.speed = (Math.random() * 3) + 1;
+    }
+    this.checkCollision();
 };
+
+Enemy.prototype.checkCollision = function() {
+    const lowerX = player.x - 15;
+    const upperX = player.x + 15;
+    if (this.x >= lowerX && this.x <= upperX && this.y === player.y) {
+        player.resetPlayer(0);
+    }
+}
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -49,6 +59,7 @@ class Player {
             case 'right':
                 this.x += 101;
         }
+        this.checkWin();
     }
 
     render() {
@@ -67,6 +78,19 @@ class Player {
         }
         this.render();
     }
+
+    checkWin() {
+        if (this.y < 0) {
+            this.resetPlayer(250);
+        }
+    }
+
+    resetPlayer(resetTime) {
+        window.setTimeout(() => {
+            this.x = 202;
+            this.y = 373.5;
+        }, resetTime);
+    }
 }
 
 
@@ -80,8 +104,9 @@ const allEnemies = [];
 // Calculate Y positions of enemies and add to allEnemies.
 for (let i = 0; i < 3; i++) {
     let nextPos;
+    let speed = (Math.random() * 3) + 1.5;
     i === 0 ? nextPos = 41.5 : nextPos = 41.5 + (83 * i);
-    const newEnemy = new Enemy(0, nextPos, 0);
+    const newEnemy = new Enemy(0, nextPos, speed);
     allEnemies.push(newEnemy);
 }
 
