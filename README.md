@@ -1,6 +1,10 @@
 # Arcade Game
 Welcome to the classic 'frogger' type arcade game!
 
+## Launching the Game
+After downloading the project files, starting the game is easy.
+To launch the game, simply open index.html in your browser and the game will start automatically.
+
 ## Game Objective
 The objective of the game is to safely cross the road and into the water.
 
